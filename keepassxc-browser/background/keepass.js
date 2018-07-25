@@ -286,7 +286,7 @@ keepass.retrieveCredentials = function(callback, tab, url, submiturl, forceCallb
     }, tab, false, triggerUnlock);
 };
 
-keepass.generatePassword = function(callback, tab, forceCallback) {
+keepass.generatePassword = function(callback, tab) {
     if (!keepass.isConnected) {
         callback([]);
         return;
@@ -295,9 +295,7 @@ keepass.generatePassword = function(callback, tab, forceCallback) {
     keepass.testAssociation((taresponse) => {
         if (!taresponse) {
             browserAction.showDefault(null, tab);
-            if (forceCallback) {
-                callback([]);
-            }
+            callback([]);
             return;
         }
 
@@ -675,6 +673,7 @@ keepass.lockDatabase = function(tab) {
 
                 if (keepass.verifyResponse(parsed, incrementedNonce)) {
                     keepass.isDatabaseClosed = true;
+                    keepass.updateDatabase();
 
                     // Display error message in the popup
                     keepass.handleError(tab, kpErrors.DATABASE_NOT_OPENED);
@@ -840,22 +839,7 @@ keepass.onNativeMessage = function(response) {
 
     // Handle database lock/unlock status
     if (response.action === kpActions.DATABASE_LOCKED || response.action === kpActions.DATABASE_UNLOCKED) {
-        keepass.testAssociation((associationResponse) => {
-            keepass.isConfigured().then((configured) => {
-                keepass.updatePopup(configured ? 'normal' : 'cross');
-
-                // Send message to content script
-                browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
-                    if (tabs.length) {
-                        browser.tabs.sendMessage(tabs[0].id, {
-                            action: 'check_database_hash',
-                            hash: {old: keepass.previousDatabaseHash, new: keepass.databaseHash}
-                        });
-                        keepass.previousDatabaseHash = keepass.databaseHash;
-                    }
-                });
-            });
-        }, null);
+        keepass.updateDatabase();
     }
 };
 
@@ -1061,4 +1045,23 @@ keepass.updatePopup = function(iconType) {
         data.iconType = iconType;
         browserAction.show(null, {'id': page.currentTabId});
     }
+};
+
+// Updates the database hashes to content script
+keepass.updateDatabase = function() {
+    keepass.testAssociation((associationResponse) => {
+        keepass.isConfigured().then((configured) => {
+            keepass.updatePopup(configured ? 'normal' : 'cross');
+            // Send message to content script
+            browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
+                if (tabs.length) {
+                    browser.tabs.sendMessage(tabs[0].id, {
+                        action: 'check_database_hash',
+                        hash: {old: keepass.previousDatabaseHash, new: keepass.databaseHash}
+                    });
+                    keepass.previousDatabaseHash = keepass.databaseHash;
+                }
+            });
+        });
+    }, null);
 };
