@@ -297,11 +297,11 @@ cipFields.getAllCombinations = function(inputs) {
     for (const i of inputs) {
         if (i) {
             if (i.getAttribute('type') && i.getAttribute('type').toLowerCase() === 'password') {
-                const uId = (!uField || uField.length < 1) ? null : cipFields.prepareId(uField.getAttribute('data-kpxc-id'));
+                const uId = (!uField || uField.length < 1) ? null : uField.getAttribute('data-kpxc-id');
 
                 const combination = {
                     username: uId,
-                    password: cipFields.prepareId(i.getAttribute('data-kpxc-id'))
+                    password: i.getAttribute('data-kpxc-id')
                 };
                 fields.push(combination);
 
