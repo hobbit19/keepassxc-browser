@@ -14,6 +14,7 @@ kpxcAutocomplete.create = function(input, showListInstantly = false) {
     });
 
     input.addEventListener('keypress', keyPress);
+    input.setAttribute('autocomplete', 'off');
 
     if (showListInstantly) {
         showList(input);
@@ -28,6 +29,7 @@ kpxcAutocomplete.create = function(input, showListInstantly = false) {
         div.style.top = String((rect.top + document.body.scrollTop) + input.offsetHeight) + 'px';
         div.style.left = String((rect.left + document.body.scrollLeft)) + 'px';
         div.style.minWidth = String(input.offsetWidth) + 'px';
+        div.style.zIndex = '2147483646';
         document.body.append(div);
 
         for (const c of kpxcAutocomplete.elements) {
