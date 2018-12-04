@@ -9,10 +9,7 @@ const hostSegment = '(\\*|(?:\\*\\.)?(?:[^/*]+))?';
 const pathSegment = '(.*)';
 
 var isFirefox = function() {
-    if (!(/Chrome/.test(navigator.userAgent) && /Google/.test(navigator.vendor))) {
-        return true;
-    }
-    return false;
+    return navigator.userAgent.indexOf('Firefox') !== -1 || navigator.userAgent.indexOf('Gecko/') !== -1;
 };
 
 var showNotification = function(message) {

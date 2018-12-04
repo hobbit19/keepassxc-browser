@@ -1,6 +1,6 @@
 'use strict';
 
-// jQuery style wrapper for getElementById()
+// jQuery style wrapper for querySelector()
 var $ = function(elem)
 {
     return document.querySelector(elem);
