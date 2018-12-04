@@ -126,7 +126,7 @@ kpxcPassword.createDialog = function() {
 
     const passwordRow = kpxcUI.createElement('div', 'kpxc-pwgen-password-row');
     const input = kpxcUI.createElement('input', 'kpxc-pwgen-input', {'placeholder': tr('passwordGeneratorPlaceholder'), 'type': 'text'});
-    const inputLabel = kpxcUI.createElement('label', 'kpxc-pwgen-bits', {}, '???' + tr("passwordGeneratorBits"));
+    const inputLabel = kpxcUI.createElement('label', 'kpxc-pwgen-bits', {}, tr('passwordGeneratorBits', '???'));
     passwordRow.append(input);
     passwordRow.append(inputLabel);
 
@@ -275,7 +275,7 @@ kpxcPassword.callbackGeneratedPassword = function(entries) {
         kpxcPassword.whiteButton('#kpxc-pwgen-btn-fill');
         kpxcPassword.whiteButton('#kpxc-pwgen-btn-copy');
         $('.kpxc-pwgen-input').value = entries[0].password;
-        $('.kpxc-pwgen-bits').textContent = (isNaN(entries[0].login) ? '???' : entries[0].login) + tr('passwordGeneratorBits');
+        $('.kpxc-pwgen-bits').textContent = tr('passwordGeneratorBits', (isNaN(entries[0].login) ? '???' : entries[0].login));
     } else {
         if (document.querySelectorAll('div#kpxc-pwgen-error').length === 0) {
             $('.kpxc-pwgen-checkbox').parentElement.style.display = 'none';

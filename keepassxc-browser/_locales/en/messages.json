@@ -104,7 +104,7 @@
         "description": "Checkbox text below the password generator input field."
     },
     "passwordGeneratorBits": {
-        "message": " Bits",
+        "message": "$1 Bits",
         "description": "Bits of the generated password."
     },
     "passwordGeneratorTitle": {
